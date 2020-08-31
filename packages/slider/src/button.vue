@@ -191,7 +191,7 @@
         }
       },
 
-      onDragEnd() {
+      onDragEnd(e) {
         if (this.dragging) {
           /*
            * 防止在 mouseup 后立即触发 click，导致滑块有几率产生一小段位移
@@ -203,6 +203,11 @@
             if (!this.isClick) {
               this.setPosition(this.newPosition);
               this.$parent.emitChange();
+              if (e.type === 'mouseup') {
+                this.$nextTick(() =>{
+                  this.hideTooltip();
+                });
+              }
             }
           }, 0);
           window.removeEventListener('mousemove', this.onDragging);
